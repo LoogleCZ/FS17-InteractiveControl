@@ -108,5 +108,4 @@ If you want to know more about xml nodes and attributes used in IC script, pleas
 * [Using outside IC for 3 point hitches](./tutorials/3pControl.md)
 * [How to make IC optional in shop](./tutorials/optionalIC.md)
 * [Supported button events in IC](./components/supportedButtonEvents.md)
-* [How to create ingame interactive display with IC](./tutorials/displays.md)
-* [List of texts that is used by IC](./usedTexts.md) & [Default (localized) l10n entries](./code/l10n_entries.md)
+* [List of texts that is used by IC](./usedTexts.md) & [Default (localized) l10n entries](./code/l10n_entries.xml)
