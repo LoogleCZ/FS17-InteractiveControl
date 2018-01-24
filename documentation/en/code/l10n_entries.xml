@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+	<text name="InteractiveControl_Off">
+		<en>Disable IC</en>
+		<cz>Vypnout IC</cz>
+	</text>
+	<text name="InteractiveControl_On">
+		<en>Activate IC</en>
+		<cz>Zapnout IC</cz>
+	</text>
+	<text name="InteractiveControl_ModeSelect">
+		<en>IC toggle mode: %s</en>
+		<cz>Mód IC: %s</cz>
+	</text>
+	<text name="InteractiveControl_Quick">
+		<en>Quick</en>
+		<cz>Rychlý</cz>
+	</text>
+	<text name="input_INTERACTIVE_CONTROL_SWITCH">
+		<en>Turn Interactive Control on/off</en>
+		<cz>Vypnout/zapnout Interactive Control</cz>
+	</text>
+	<text name="input_INTERACTIVE_CONTROL_MODE">
+		<en>Change Interactive Control toggle style</en>
+		<cz>Změnit styl přepínání Interactive Control</cz>
+	</text>
+</l10n>

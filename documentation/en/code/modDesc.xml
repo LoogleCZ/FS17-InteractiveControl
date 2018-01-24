@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="37">
+    <!-- rest of your modDesc here -->
+    <specializations>
+        <!-- rest of the specializations -->
+        <specialization name="InteractiveControl" className="InteractiveControl" filename="icSources/InteractiveControl.lua"/>
+    </specializations>
+	
+    <vehicleTypes>
+        <!-- maybe other vehicleTypes -->
+        <type name="yourVehicleType" className="Vehicle" filename="$dataS/scripts/vehicles/Vehicle.lua">
+            <!-- rest of vehicle specializations here -->
+            <specialization name="InteractiveControl"/>
+        </type>
+    </vehicleTypes>
+	
+    <inputBindings>
+        <!-- another input bindings here -->
+        <input name="INTERACTIVE_CONTROL_SWITCH" category="VEHICLE" key1="KEY_lalt"        key2="" button="" device="0" mouse="" />
+        <input name="INTERACTIVE_CONTROL_MODE"   category="VEHICLE" key1="KEY_lctrl KEY_m" key2="" button="" device="0" mouse="" />
+    </inputBindings>
+    
+    <l10n>
+        <!-- another l10n entries here - in release use that in l10n_entries.xml -->
+        <text name="InteractiveControl_Off">
+			<en>Disable IC</en>
+		</text>
+		<text name="InteractiveControl_On">
+			<en>Activate IC</en>
+		</text>
+		<text name="InteractiveControl_ModeSelect">
+			<en>IC toggle mode: %s</en>
+		</text>
+		<text name="InteractiveControl_Quick">
+			<en>Quick</en>
+		</text>
+		<text name="input_INTERACTIVE_CONTROL_SWITCH">
+			<en>Turn Interactive Control on/off</en>
+		</text>
+		<text name="input_INTERACTIVE_CONTROL_MODE">
+			<en>Change Interactive Control toggle style</en>
+		</text>
+    </l10n>
+</modDesc>
