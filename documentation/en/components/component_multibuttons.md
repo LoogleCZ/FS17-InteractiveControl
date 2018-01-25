@@ -22,7 +22,8 @@ Or you can visit [whole XML schema documentation](../XMLFormatDocumentation.md):
 		]
 		[defaultStatus="false"//bool]
 		[synch="true"//bool]
-		[initAction="false"//bool] >
+		[initAction="false"//bool]
+		[playClickSound="false"//bool] >
 		[<control
 			type=""//string
 			index=""//int />]
@@ -60,6 +61,7 @@ The following table will explain what certain attributes do:
 | defaultStatus       | bool       | false                | Default status of component. Component's status will be set to this value when loading |
 | synch               | bool       | true                 | Tell the script if component will be synchronized via IC or not. In animations is recomended to set synch to `true` (or do not state synch attribute) |
 | initAction          | bool       | false                | If set to `true`, component will be triggered at loading to synchronize state and actual status. In animations is recomended to set `initAction` to `true` |
+| playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 
 __(*)__: If you use component in multi buttons or buttons listeners, this attribute will be ignored and action will be triggered anyway. For example: multibutton from inside will be triggered and contain animation from outside. Animation will be played anyway.
 

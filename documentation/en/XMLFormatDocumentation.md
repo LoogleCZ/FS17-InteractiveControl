@@ -34,7 +34,8 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 			[initAction="false"//bool]
 			[looping="false"//bool]
 			[animSpeedScale="1"//float]
-			[saveAnimationStatus="false"//bool] />]
+			[saveAnimationStatus="false"//bool]
+			[playClickSound="false"//bool] />]
 		<!-- 
 			from animation(0) to animation(n)
 			thus first animation have index 0. This is useful for multi-buttons and debugging
@@ -56,7 +57,8 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 			event=""//string
 			[defaultStatus="false"//bool]
 			[synch="true"//bool]
-			[initAction="false"//bool] />]
+			[initAction="false"//bool]
+			[playClickSound="false"//bool] />]
 		<!-- 
 			from button(0) to button(n)
 			thus first button have index 0. This is useful for multi-buttons and debugging
@@ -84,7 +86,8 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 			layerVisPos=""//i3d_coords
 			layerClosePos=""//i3d_coords
 			[animName=""//string]
-			[useStart="true"//bool] >
+			[useStart="true"//bool]
+			[playClickSound="false"//bool] >
 			<layer
 				index=""//i3d_node
 				[name="ERROR"//l10n_entry]
@@ -97,14 +100,16 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 						[pulsingMark="false"//bool
 							[pulseScale="0.01 0.01 0.01"//i3d_coords]
 						]
-					]/>]
+					]
+					[playClickSound="false"//bool] />]
 				[<close 
 					[mark=""//i3d_node
 						[size="0.05"//float]
 						[pulsingMark="false"//bool
 							[pulseScale="0.01 0.01 0.01"//i3d_coords]
 						]
-					]/>]
+					]
+					[playClickSound="false"//bool] />]
 			</layer>
 			<!--
 				Note - open and close tag should be omitted only in case of default layer!
@@ -135,8 +140,8 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 			[typeChange="set"//string ('set' or 'toggle')]
 			[controlElem=""//i3d_node]
 			[defaultVis=""//bool]
-			[saveAnimationStatus="false"//bool] />]
-			>
+			[saveAnimationStatus="false"//bool]
+			[playClickSound="false"//bool] >
 				[<object
 					index=""//i3d_node
 					[neg="false"//bool] />]
@@ -166,7 +171,8 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 			]
 			[defaultStatus="false"//bool]
 			[synch="true"//bool]
-			[initAction="false"//bool] >
+			[initAction="false"//bool]
+			[playClickSound="false"//bool >
 			[<control
 				type=""//string
 				index=""//int />]

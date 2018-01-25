@@ -14,17 +14,19 @@ Interactive Control from version 4.0.0. comes with documentation in english. You
 
 ## Info about script
 
+You can find all changes between versions in [changelog](./CHANGELOG.md)
+
 ### Release
 
-Last script release version: 4.0.2.
+Last script release version: 4.0.4.
 
-Release date: 2018-01-24
+Release date: 2018-01-25
 
 ### Development
 
-Last script development version: 4.0.2.
+Last script development version: 4.0.4.
 
-Last modification date: 2018-01-24
+Last modification date: 2018-01-25
 
 ## Contributors
 
@@ -43,6 +45,10 @@ If you want to help with development with this script, you can do it here on Git
 List of mods using this specialization. If you want, you can add your mod in this list or I'll add your mod in this list if you [send me a mail](mailto:mar.fabik@gmail.com) or contact me anywhere else.
 
 * [John Deere 7R series 2011 Europe Version](https://www.modhoster.de/mods/john-deere-7r-series-2011-europe-version) by [Ago Modding](https://www.fb.com/ago.systemtech)
+
+## Support
+
+If you like this script you can support me with donation on [PayPal](https://www.paypal.me/MartinFabik) or you can join this project by testing, suggestions, etc... Any kind of support is appreciated.
 
 ## Licence
 

@@ -26,7 +26,8 @@ Or you can visit [whole XML schema documentation](../XMLFormatDocumentation.md):
 		[initAction="false"//bool]
 		[looping="false"//bool]
 		[animSpeedScale="1"//float]
-		[saveAnimationStatus="false"//bool] />]
+		[saveAnimationStatus="false"//bool]
+		[playClickSound="false"//bool] />]
 	<!-- 
 		from animation(0) to animation(n)
 		thus first animation have index 0. This is useful for multi-buttons and debugging
@@ -68,6 +69,7 @@ The following table will explain what certain attributes do:
 | looping             | bool       | false                | Used for looping animations like wiper. Tell IC that this animation is looping so IC can interact properly. |
 | animSpeedScale      | float      | 1                    | Spped of played animation in range with bounds 1 and -1. If set to -1, animation will be played in reverse. |
 | saveAnimationStatus | bool       | false                | You can tell if you want to save your animation status or not. If set to `true` commponent's status will be saved when exit and after reloading game animation remains open/close |
+| playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 
 __(*)__: If you use component in multi buttons or buttons listeners, this attribute will be ignored and action will be triggered anyway. For example: multibutton from inside will be triggered and contain animation from outside. Animation will be played anyway.
 

@@ -26,8 +26,8 @@ Or you can visit [whole XML schema documentation](../XMLFormatDocumentation.md):
 		[typeChange="set"//string ('set' or 'toggle')]
 		[controlElem=""//i3d_node]
 		[defaultVis=""//bool]
-		[saveAnimationStatus="false"//bool] />]
-		>
+		[saveAnimationStatus="false"//bool]
+		[playClickSound="false"//bool] >]
 			[<object
 				index=""//i3d_node
 				[neg="false"//bool] />]
@@ -65,6 +65,7 @@ The following table will explain what certain attributes do:
 | controlElem         | i3d node   |                      | Control element for `set` change type. By this element will be synchronized other objects. Dous not make sense with `toggle` change style |
 | defaultVis          | bool       |                      | determine default visibility status after game load. This option will not be used in next loading when `saveAnimationStatus` is set to `true` |
 | saveAnimationStatus | bool       | false                | You can tell if you want to save your animation status or not. If set to `true` commponent's status will be saved when exit and after reloading game animation remains open/close. Does not make sense if using `typeChange` set to `toggle` |
+| playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 
 __(*)__: If you use component in multi buttons or buttons listeners, this attribute will be ignored and action will be triggered anyway. For example: multibutton from inside will be triggered and contain animation from outside. Animation will be played anyway.
 

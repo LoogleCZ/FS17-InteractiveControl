@@ -4,10 +4,10 @@
 --
 -- Author: Martin Fabík (LoogleCZ)
 -- Author of some events: Andy (GtX)
--- For IC version: 4.0.3
+-- For IC version: 4.0.4
 -- You can find whole list of supported events in documentation
 --
--- Last edit: 2018-01-24 13:50:00
+-- Last edit: 2018-01-25 12:14:00
 -- Free for non-comerecial usage
 --
 
@@ -881,7 +881,7 @@ function InteractiveControl:updateOpenStatus(id)
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "lights.beaconLights" then
 			if self.setBeaconLightsVisibility ~= nil then
-				self:setBeaconLightsVisibility(self.LIC.interactiveObjects[id].isOpen, true);
+				self.LIC.interactiveObjects[id].isOpen = self.beaconLightsActive;
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "lights.cablight" then
 			if self.cl ~= nil then
@@ -946,7 +946,6 @@ function InteractiveControl:updateOpenStatus(id)
 		elseif self.LIC.interactiveObjects[id].event == "implements.raiseLower.rear" then
 			local implements = InteractiveControl:getICimplements(self, "back");
 			self.LIC.interactiveObjects[id].isOpen = lowerOnImplementsStatus(self, implements, id);
-		
 		elseif self.LIC.interactiveObjects[id].event == "implements.fold.all" then
 			local implements = InteractiveControl:getICimplements(self, "");
 			self.LIC.interactiveObjects[id].isOpen = foldOnImplementsFinishStatus(self, implements, id);
@@ -989,9 +988,9 @@ function InteractiveControl:updateOpenStatus(id)
 				self.LIC.interactiveObjects[id].isOpen = self.LIC.interactiveObjects[id].isOpen or g_gameSettings:getValue("radioIsActive");
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "radio.channelUp" then
-			-- this event cannot be assumed as open
+			self.LIC.interactiveObjects[id].isOpen = false;
 		elseif self.LIC.interactiveObjects[id].event == "radio.channelDown" then
-			-- this event cannot be assumed as open	
+			self.LIC.interactiveObjects[id].isOpen = false;
 		elseif self.LIC.interactiveObjects[id].event == "mix.cover" then
 			if self.setCoverState ~= nil then
 				self.LIC.interactiveObjects[id].isOpen = self.isCoverOpen;

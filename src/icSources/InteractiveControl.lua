@@ -12,8 +12,8 @@
 -- GitHub project: https://github.com/LoogleCZ/FS17-InteractiveControl
 -- If anyone found errors, please contact me at mar.fabik@gmail.com or report it on GitHub
 --
--- version ID   - 4.0.3
--- version date - 2018-01-24 13:50:00
+-- version ID   - 4.0.4
+-- version date - 2018-01-25 12:15:00
 --
 
 InteractiveControl = {};
@@ -203,8 +203,8 @@ function InteractiveControl:load(savegame)
 					
 					local markOpenData = {};
 					local markCloseData = {};
-					markOpenData.mark, markOpenData.size, markOpenData.pulse, markOpenData.scaleX, markOpenData.scaleY, markOpenData.scaleZ, markOpenData.pulsingMark, markOpenData.pulseScaleX, markOpenData.pulseScaleY, markOpenData.pulseScaleZ = InteractiveControl:loadMarkSettings(self.components, self.xmlFile, key2 .. ".open");
-					markCloseData.mark, markCloseData.size, markCloseData.pulse, markCloseData.scaleX, markCloseData.scaleY, markCloseData.scaleZ, markCloseData.pulsingMark, markCloseData.pulseScaleX, markCloseData.pulseScaleY, markCloseData.pulseScaleZ = InteractiveControl:loadMarkSettings(self.components, self.xmlFile, key2 .. ".close");
+					markOpenData.mark, markOpenData.size, markOpenData.pulse, markOpenData.scaleX, markOpenData.scaleY, markOpenData.scaleZ, markOpenData.pulsingMark, markOpenData.pulseScaleX, markOpenData.pulseScaleY, markOpenData.pulseScaleZ, markOpenData.playClickSound = InteractiveControl:loadMarkSettings(self.components, self.xmlFile, key2 .. ".open");
+					markCloseData.mark, markCloseData.size, markCloseData.pulse, markCloseData.scaleX, markCloseData.scaleY, markCloseData.scaleZ, markCloseData.pulsingMark, markCloseData.pulseScaleX, markCloseData.pulseScaleY, markCloseData.pulseScaleZ, markOpenData.playClickSound = InteractiveControl:loadMarkSettings(self.components, self.xmlFile, key2 .. ".close");
 					self.LIC.interactiveObjects[upperLayerIndex].layerIndexes[k] = index;
 					if markOpenData.mark ~= nil and markCloseData.mark ~= nil then
 						j = j + 1;
@@ -529,9 +529,9 @@ end;
 function InteractiveControl:keyEvent(unicode, sym, modifier, isDown) -- OK
 end;
 
-function InteractiveControl:update(dt) -- OK -- revision
+function InteractiveControl:update(dt) -- OK
 	
-	if self.isClient then
+	if self.isClient and self:getIsActiveForSound() then
 		for _,v in pairs(self.LIC.sounds) do
 			local object = self.LIC.interactiveObjects[v.componentIndex];
 			
@@ -560,8 +560,8 @@ function InteractiveControl:update(dt) -- OK -- revision
 				end;
 			end;
 			v.componentStatus = object.isOpen;
-		end;	
-	end;	
+		end;
+	end;
 	
 	if self.isClient then
 		self.LIC.toggleStyleState = math.min(2, math.max(self.LIC.toggleStyleState, 1));
@@ -605,6 +605,11 @@ function InteractiveControl:update(dt) -- OK -- revision
 			if not self.LIC.isClicked then
 				self.LIC.isClicked = true;
 				self:actionOnObject(self.LIC.foundInteractiveObject);
+				if self:getIsActiveForSound() then
+					if self.LIC.interactiveObjects[self.LIC.foundInteractiveObject].playClickSound and g_currentMission.sampleToggleLights ~= nil then
+						SoundUtil.playSample(g_currentMission.sampleToggleLights, 1, 0, 1);
+					end;
+				end;
 			end;
 		else
 			self.LIC.isClicked = false;
@@ -839,7 +844,7 @@ end;
 function InteractiveControl:loadICButtonFromXML(vehicle, xmlFile, key, ICBtn, index) -- OK
 	ICBtn.name = g_i18n:getText(Utils.getNoNil((getXMLString(xmlFile, key .. "#name")), "modHub_error"));
 
-	ICBtn.mark, ICBtn.size, ICBtn.pulse, ICBtn.scaleX, ICBtn.scaleY, ICBtn.scaleZ, ICBtn.pulsingMark, ICBtn.pulseScaleX, ICBtn.pulseScaleY, ICBtn.pulseScaleZ = InteractiveControl:loadMarkSettings(vehicle.components, xmlFile, key);
+	ICBtn.mark, ICBtn.size, ICBtn.pulse, ICBtn.scaleX, ICBtn.scaleY, ICBtn.scaleZ, ICBtn.pulsingMark, ICBtn.pulseScaleX, ICBtn.pulseScaleY, ICBtn.pulseScaleZ, ICBtn.playClickSound = InteractiveControl:loadMarkSettings(vehicle.components, xmlFile, key);
 	
 	ICBtn.renderStatusText = Utils.getNoNil(getXMLBool(xmlFile, key .. "#renderStatusText"), true);
 	ICBtn.isOpen = Utils.getNoNil((getXMLBool(xmlFile, key .. "#defaultStatus")), false);
@@ -847,8 +852,8 @@ function InteractiveControl:loadICButtonFromXML(vehicle, xmlFile, key, ICBtn, in
 	ICBtn.offMessage =  g_i18n:getText(Utils.getNoNil(getXMLString(xmlFile, key .. "#offMessage"), "action_turnOffOBJECT"));
 		
 	ICBtn.canOutside =  Utils.getNoNil(getXMLBool(xmlFile, key.."#isOutside"), false);
-	ICBtn.synch =  Utils.getNoNil(getXMLBool(xmlFile, key.."#synch"), true);	
-
+	ICBtn.synch =  Utils.getNoNil(getXMLBool(xmlFile, key.."#synch"), true);
+	
 	ICBtn.isEntered = false;
 	
 	local initAction = Utils.getNoNil((getXMLBool(xmlFile, key .. "#initAction")), false);
@@ -859,7 +864,7 @@ end;
 
 function InteractiveControl:loadMarkSettings(components ,xmlFile, key) -- OK
 	if not hasXMLProperty(xmlFile, key) then
-		return nil,nil,nil,nil,nil,nil,nil,nil,nil,nil;
+		return nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil;
 	end;
 	local mark = Utils.indexToObject(components, getXMLString(xmlFile, key .. "#mark"));
 	local size = Utils.getNoNil((getXMLFloat(xmlFile, key .. "#size")), 0.05);
@@ -872,7 +877,8 @@ function InteractiveControl:loadMarkSettings(components ,xmlFile, key) -- OK
 		pulse = getChildAt(mark, 0);
 		scaleX, scaleY, scaleZ = getScale(pulse);
 	end;
-	return mark, size, pulse, scaleX, scaleY, scaleZ, pulsingMark, pulseScaleX, pulseScaleY, pulseScaleZ;
+	local playSound = Utils.getNoNil(getXMLBool(xmlFile, key.."#playClickSound"), false);
+	return mark, size, pulse, scaleX, scaleY, scaleZ, pulsingMark, pulseScaleX, pulseScaleY, pulseScaleZ, playSound;
 end;
 
 function InteractiveControl:getICimplements(vehicle, which)

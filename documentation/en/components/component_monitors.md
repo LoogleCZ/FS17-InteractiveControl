@@ -29,7 +29,8 @@ Or you can visit [whole XML schema documentation](../XMLFormatDocumentation.md):
 		layerVisPos=""//i3d_coords
 		layerClosePos=""//i3d_coords
 		[animName=""//string]
-		[useStart="true"//bool] >
+		[useStart="true"//bool]
+		[playClickSound="false"//bool] >
 		<layer
 			index=""//i3d_node
 			[name="ERROR"//l10n_entry]
@@ -42,14 +43,16 @@ Or you can visit [whole XML schema documentation](../XMLFormatDocumentation.md):
 					[pulsingMark="false"//bool
 						[pulseScale="0.01 0.01 0.01"//i3d_coords]
 					]
-				]/>]
+				]
+				[playClickSound="false"//bool] />]
 			[<close 
 				[mark=""//i3d_node
 					[size="0.05"//float]
 					[pulsingMark="false"//bool
 						[pulseScale="0.01 0.01 0.01"//i3d_coords]
 					]
-				]/>]
+				]
+				[playClickSound="false"//bool] />]
 		</layer>
 		<!--
 			Note - open and close tag should be omitted only in case of default layer!
@@ -89,6 +92,7 @@ The following table will explain what certain attributes of this component do:
 | moveDefaultLayer    | bool       | false                | Determine if default layer will be moved when toggling to other tab. If set to false, default layer stay on background all the time. |
 | animName            | string     |                      | Name of animation that will be used at monitor start. When no animations is set nothing happens. |
 | useStart            | bool       | true                 | Define if monitor will use motor start (when motor is on monitor automatically turns on if sets to `true`) or not |
+| playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 
 __(*)__: If you use component in multi buttons or buttons listeners, this attribute will be ignored and action will be triggered anyway. For example: multibutton from inside will be triggered and contain animation from outside. Animation will be played anyway.
 
@@ -120,6 +124,7 @@ Here is attributes that is common for open and close node:
 | size                | float      | 0.05                 | Size of clickable area for `mark` |
 | pulsingMark         | bool       | false                | If set to true, mark will be pulsing when hovering on it. |
 | pulseScale          | i3d coords | 0.01 0.01 0.01       | Tell the script how much will mark pulse. |
+| playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 
 ## Minimal monitor setting
 
