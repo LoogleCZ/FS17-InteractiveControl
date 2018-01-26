@@ -1,0 +1,2 @@
+COPY: .\src\icSources
+C:\Users\Martin\Documents\My Games\FarmingSimulator2017\mods\FS17_TatraPhoenix_AR\icSources
