@@ -45,6 +45,7 @@ If you want to help with development with this script, you can do it here on Git
 List of mods using this specialization. If you want, you can add your mod in this list or I'll add your mod in this list if you [send me a mail](mailto:mar.fabik@gmail.com) or contact me anywhere else.
 
 * [John Deere 7R series 2011 Europe Version](https://www.modhoster.de/mods/john-deere-7r-series-2011-europe-version) by [Ago Modding](https://www.fb.com/ago.systemtech)
+* [Volvo FH16 750 AR/Frame Pack](https://www.modhoster.de/mods/volvo-fh16-750-ar-frame-pack) by [GTX MODS](https://www.gtxmods.com/)
 
 ## Support
 
