@@ -12,8 +12,8 @@
 -- GitHub project: https://github.com/LoogleCZ/FS17-InteractiveControl
 -- If anyone found errors, please contact me at mar.fabik@gmail.com or report it on GitHub
 --
--- version ID   - 4.0.4
--- version date - 2018-01-25 12:15:00
+-- version ID   - 4.0.5
+-- version date - 2018-02-24 00:39:00
 --
 
 InteractiveControl = {};
@@ -530,53 +530,43 @@ function InteractiveControl:keyEvent(unicode, sym, modifier, isDown) -- OK
 end;
 
 function InteractiveControl:update(dt) -- OK
-	
-	if self.isClient and self:getIsActiveForSound() then
-		for _,v in pairs(self.LIC.sounds) do
-			local object = self.LIC.interactiveObjects[v.componentIndex];
-			
-			if object.isOpen and v.openSound ~= nil then
-				SoundUtil.playSample(v.openSound, 0, 0, nil);
-			else
-				SoundUtil.stopSample(v.openSound);
-			end;
-			if not object.isOpen and v.closeSound ~= nil then
-				SoundUtil.playSample(v.closeSound, 0, 0, nil);
-			else
-				SoundUtil.stopSample(v.closeSound);
-			end;
-			if object.isOpen ~= v.componentStatus then
-				if object.isOpen and v.openingSound ~= nil then
-					SoundUtil.playSample(v.openingSound, 1, 0, nil);
-					if v.closingSound ~= nil then
-						SoundUtil.stopSample(v.closingSound);
-					end;
-				end;
-				if not object.isOpen and v.closingSound ~= nil then
-					SoundUtil.playSample(v.closingSound, 1, 0, nil);
-					if v.openingSound ~= nil then
-						SoundUtil.stopSample(v.openingSound);
-					end;
-				end;
-			end;
-			v.componentStatus = object.isOpen;
-		end;
-	end;
-	
 	if self.isClient then
-		self.LIC.toggleStyleState = math.min(2, math.max(self.LIC.toggleStyleState, 1));
-		
-		if self.LIC.lastCamIndexUsed ~= nil and self.LIC.lastCamIndexUsed ~= self.camIndex then
-			self:toggleICState(nil, false);
+		if self:getIsActiveForSound() then -- sounds
+			for _,v in pairs(self.LIC.sounds) do
+				local object = self.LIC.interactiveObjects[v.componentIndex];
+				
+				if object.isOpen and v.openSound ~= nil then
+					SoundUtil.playSample(v.openSound, 0, 0, nil);
+				else
+					SoundUtil.stopSample(v.openSound);
+				end;
+				if not object.isOpen and v.closeSound ~= nil then
+					SoundUtil.playSample(v.closeSound, 0, 0, nil);
+				else
+					SoundUtil.stopSample(v.closeSound);
+				end;
+				if object.isOpen ~= v.componentStatus then
+					if object.isOpen and v.openingSound ~= nil then
+						SoundUtil.playSample(v.openingSound, 1, 0, nil);
+						if v.closingSound ~= nil then
+							SoundUtil.stopSample(v.closingSound);
+						end;
+					end;
+					if not object.isOpen and v.closingSound ~= nil then
+						SoundUtil.playSample(v.closingSound, 1, 0, nil);
+						if v.openingSound ~= nil then
+							SoundUtil.stopSample(v.openingSound);
+						end;
+					end;
+				end;
+				v.componentStatus = object.isOpen;
+			end;
 		end;
 		
-		if self:getIsActive() then -- toggle IC toggle type
-			if InputBinding.hasEvent(InputBinding.INTERACTIVE_CONTROL_MODE) then
-				self.LIC.toggleStyleState = self.LIC.toggleStyleState + 1;
-				if self.LIC.toggleStyleState > 2 then
-					self.LIC.toggleStyleState = 1;
-				end;
-			end;
+		-- if user toggle cam disable IC
+		if self.LIC.lastCamIndexUsed ~= nil
+			and self.LIC.lastCamIndexUsed ~= self.camIndex then
+			self:toggleICState(nil, false);
 		end;
 		
 		if self.isMotorStarted then -- monitor on/off on start
@@ -614,10 +604,17 @@ function InteractiveControl:update(dt) -- OK
 		else
 			self.LIC.isClicked = false;
 		end;
-
-		self.LIC.foundInteractiveObject = nil;
 		
-		if self.LIC.isInOutsideRange or (self:getIsActive() and self:getIsActiveForInput(false) and not self:hasInputConflictWithSelection()) then
+		if self.LIC.isInOutsideRange or (self:getIsActive() and self:getIsActiveForInput(false) and not self:hasInputConflictWithSelection() and self.isEntered) then
+			if self:getIsActive() then -- toggle IC toggle type (only when we have help)
+				if InputBinding.hasEvent(InputBinding.INTERACTIVE_CONTROL_MODE) then
+					self.LIC.toggleStyleState = self.LIC.toggleStyleState + 1;
+					if self.LIC.toggleStyleState > 2 then
+						self.LIC.toggleStyleState = 1;
+					end;
+				end;
+			end;
+			
 			if self.LIC.toggleStyleState == 1 then
 				if InputBinding.hasEvent(InputBinding.INTERACTIVE_CONTROL_SWITCH) then
 					self:toggleICState(self.LIC.isInOutsideRange);
@@ -629,16 +626,20 @@ function InteractiveControl:update(dt) -- OK
 				end;
 			elseif self.LIC.toggleStyleState == 2 then
 				if InputBinding.isPressed(InputBinding.INTERACTIVE_CONTROL_SWITCH) then
-					self:toggleICState(self.LIC.isInOutsideRange, true);
+					if not self.LIC.isMouseActive then
+						self:toggleICState(self.LIC.isInOutsideRange, true);
+					end;
 				else
-					self:toggleICState(self.LIC.isInOutsideRange, false);
+					if self.LIC.isMouseActive then
+						self:toggleICState(self.LIC.isInOutsideRange, false);
+					end;
 				end;
 				if not self.LIC.isMouseActive then
 					g_currentMission:addHelpButtonText(g_i18n:getText("InteractiveControl_On"), InputBinding.INTERACTIVE_CONTROL_SWITCH);
 				end;
 			end;
-		end;
-		if self:getIsActive() and self:getIsActiveForInput(false) and not self:hasInputConflictWithSelection() then
+			
+			-- help for toggle style
 			if self.LIC.toggleStyleState == 1 then
 				if self.LIC.isMouseActive then
 					g_currentMission:addHelpButtonText(string.format(g_i18n:getText("InteractiveControl_ModeSelect"), g_i18n:getText("button_normal")), InputBinding.INTERACTIVE_CONTROL_MODE, nil, GS_PRIO_HIGH)
@@ -647,24 +648,33 @@ function InteractiveControl:update(dt) -- OK
 				if self.LIC.isMouseActive then
 					g_currentMission:addHelpButtonText(string.format(g_i18n:getText("InteractiveControl_ModeSelect"), g_i18n:getText("InteractiveControl_Quick")), InputBinding.INTERACTIVE_CONTROL_MODE, nil, GS_PRIO_HIGH)
 				end;
-			end
+			end;
 		end;
 
-		if self.LIC.isMouseActive and not self.isEntered then
-			self.LIC.lastMouseXPos = InputBinding.mousePosXLast;
-			self.LIC.lastMouseYPos = InputBinding.mousePosYLast;
-			for _,v in pairs(self.LIC.interactiveObjects) do
-				v.isEntered = false;
-			end
-			if self.LIC.lastMouseXPos ~= nil and self.LIC.lastMouseYPos ~= nil then
-				for k,v in pairs(self.LIC.interactiveObjects) do
-					if v.mark ~= nil and self.LIC.foundInteractiveObject == nil then
-						local worldX,worldY,worldZ = getWorldTranslation(v.mark);
-						local x,y,z = project(worldX,worldY,worldZ);
-						if z <= 1 then
-							if self.LIC.lastMouseXPos > (x-v.size/2) and self.LIC.lastMouseXPos < (x+v.size/2) then
-								if self.LIC.lastMouseYPos > (y-v.size/2) and self.LIC.lastMouseYPos < (y+v.size/2) then
-									if v.canOutside then
+		-- reset components
+		for _,v in pairs(self.LIC.interactiveObjects) do
+			v.isEntered = false;
+			if v.pulse ~= nil then
+				if v.pulsingMark then
+					setScale(v.pulse, v.scaleX, v.scaleY, v.scaleZ);
+				end;
+			end;
+		end;
+		
+		-- for outside IC
+		if self.LIC.isMouseActive then
+			if not self.isEntered then
+				self.LIC.foundInteractiveObject = nil; -- reset and search again
+				self.LIC.lastMouseXPos = InputBinding.mousePosXLast;
+				self.LIC.lastMouseYPos = InputBinding.mousePosYLast;
+				if self.LIC.lastMouseXPos ~= nil and self.LIC.lastMouseYPos ~= nil then
+					for k,v in pairs(self.LIC.interactiveObjects) do
+						if v.canOutside and v.mark ~= nil and (v.doNotShow == nil or v.doNotShow == false) then
+							local worldX,worldY,worldZ = getWorldTranslation(v.mark);
+							local x,y,z = project(worldX,worldY,worldZ);
+							if z <= 1 then
+								if self.LIC.lastMouseXPos > (x-v.size/2) and self.LIC.lastMouseXPos < (x+v.size/2) then
+									if self.LIC.lastMouseYPos > (y-v.size/2) and self.LIC.lastMouseYPos < (y+v.size/2) then
 										v.isEntered = true;
 										self:updateOpenStatus(k);
 										self:renderOverlayAndInfo(v);
@@ -677,26 +687,30 @@ function InteractiveControl:update(dt) -- OK
 					end;
 				end;
 			end;
-		end;
-			
-		for k,v in pairs(self.LIC.interactiveObjects) do
-			if v.pulse ~= nil then
-				if v.pulsingMark then
-					if v.isEntered then
-						local sx,sy,sz = getScale(v.pulse);
-						sx = sx - (v.pulseScaleX/400) * dt;
-						sy = sy - (v.pulseScaleY/400) * dt;
-						sz = sz - (v.pulseScaleZ/400) * dt;
-						if sx < (v.scaleX - v.pulseScaleX) or sy < (v.scaleY - v.pulseScaleY) or sz < (v.scaleZ - v.pulseScaleZ) then
-							setScale(v.pulse, (v.scaleX + v.pulseScaleX),(v.scaleY + v.pulseScaleY),(v.scaleZ + v.pulseScaleZ))
+		
+			if self.LIC.foundInteractiveObject ~= nil then
+				local foundItem = self.LIC.interactiveObjects[self.LIC.foundInteractiveObject];
+				if foundItem.pulse ~= nil then
+					if foundItem.pulsingMark then
+						local sx,sy,sz = getScale(foundItem.pulse);
+						sx = sx - (foundItem.pulseScaleX/400) * dt;
+						sy = sy - (foundItem.pulseScaleY/400) * dt;
+						sz = sz - (foundItem.pulseScaleZ/400) * dt;
+						if sx < (foundItem.scaleX - foundItem.pulseScaleX)
+							or sy < (foundItem.scaleY - foundItem.pulseScaleY)
+							or sz < (foundItem.scaleZ - foundItem.pulseScaleZ) then
+							setScale(foundItem.pulse,
+								(foundItem.scaleX + foundItem.pulseScaleX),
+								(foundItem.scaleY + foundItem.pulseScaleY),
+								(foundItem.scaleZ + foundItem.pulseScaleZ));
 						else
-							setScale(v.pulse, sx, sy, sz);
+							setScale(foundItem.pulse, sx, sy, sz);
 						end;
-					else
-						setScale(v.pulse, v.scaleX, v.scaleY, v.scaleZ);
 					end;
 				end;
 			end;
+		else
+			self.LIC.foundInteractiveObject = nil; -- reset because we don't have IC
 		end;
 	end;
 end;
@@ -721,24 +735,20 @@ end;
 
 function InteractiveControl:draw() -- OK - inside needs to be in draw for more accurate results
 	if self.LIC.isMouseActive and self.isEntered then
-		for _,v in pairs(self.LIC.interactiveObjects) do
-			v.isEntered = false;
-		end
+		self.LIC.foundInteractiveObject = nil; -- reset and search again
 		if self.LIC.lastMouseXPos ~= nil and self.LIC.lastMouseYPos ~= nil then
 			for k,v in pairs(self.LIC.interactiveObjects) do
-				if v.mark ~= nil and self.LIC.foundInteractiveObject == nil and (v.doNotShow == nil or v.doNotShow == false) then
+				if v.mark ~= nil and not v.canOutside and (v.doNotShow == nil or v.doNotShow == false) then
 					local worldX,worldY,worldZ = getWorldTranslation(v.mark);
 					local x,y,z = project(worldX,worldY,worldZ);
 					if z <= 1 then
 						if self.LIC.lastMouseXPos > (x-v.size/2) and self.LIC.lastMouseXPos < (x+v.size/2) then
 							if self.LIC.lastMouseYPos > (y-v.size/2) and self.LIC.lastMouseYPos < (y+v.size/2) then
-								if not v.canOutside then
-									v.isEntered = true;
-									self:updateOpenStatus(k);
-									self:renderOverlayAndInfo(v);
-									self.LIC.foundInteractiveObject = k;
-									break;
-								end;
+								v.isEntered = true;
+								self:updateOpenStatus(k);
+								self:renderOverlayAndInfo(v);
+								self.LIC.foundInteractiveObject = k;
+								break;
 							end;
 						end;
 					end;
