@@ -1,2 +1,6 @@
 COPY: .\src\icSources
 C:\Users\Martin\Documents\My Games\FarmingSimulator2017\mods\FS17_TatraPhoenix_AR\icSources
+C:\Users\Martin\Documents\My Games\FarmingSimulator2017\mods\FS17_KroneUltimaCF155XC_IC\icSources
+C:\Users\Martin\Documents\My Games\FarmingSimulator2017\mods\FS17_JD7R_68L_2011EU_AGO_V3mr\icSources
+C:\Users\Martin\Documents\My Games\FarmingSimulator2017\mods\FS17_Holmer_TV585_IC_TEST\icSources
+

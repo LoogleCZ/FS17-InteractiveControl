@@ -791,6 +791,8 @@ function InteractiveControl:toggleICState(isOutside, forceStatus) -- OK
 			
 			if self.LIC.isMouseActive then
 				if g_currentMission.player ~= nil then
+					local x,y,z = getRotation(g_currentMission.player.cameraNode);
+					g_currentMission.player.backupCamPosition = {x,y,z};
 					g_currentMission.player.walkingIsLocked = true;
 				end;
 				InputBinding.setShowMouseCursor(true);
@@ -821,6 +823,8 @@ function InteractiveControl:toggleICState(isOutside, forceStatus) -- OK
 				self.LIC.foundInteractiveObject = nil;
 				if g_currentMission.player ~= nil then
 					g_currentMission.player.walkingIsLocked = false;
+					g_currentMission.player.rotX = g_currentMission.player.backupCamPosition[1];
+					g_currentMission.player.rotY = g_currentMission.player.backupCamPosition[2];
 				end;
 				InputBinding.setShowMouseCursor(false);
 				
