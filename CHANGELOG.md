@@ -1,5 +1,15 @@
 # Changelog for Interactive Control script
 
+## 4.0.5 - Dev. version
+
+### Added
+
+### Changed
+
+* Fix outside camera (Issue #1). Now there is no ugly bug with camera position after turning outside IC off.
+* Fix behaviour of of attached implement with IC (Issue #2).
+* Improvement of code in main update.
+
 ## 4.0.4 - 2018-01-25
 
 ### Added

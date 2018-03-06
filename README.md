@@ -26,7 +26,7 @@ Release date: 2018-01-25
 
 Last script development version: 4.0.5.
 
-Last modification date: 2018-02-24
+Last modification date: 2018-03-06
 
 ## Contributors
 
