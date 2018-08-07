@@ -218,11 +218,8 @@ local lowerOnImplements = function(self, implements, id)
 					end;
 				end;
 			end;
-			for _,attImpl in pairs(implement.object.attacherVehicle.attachedImplements) do
-				if attImpl.object == implement.object then
-					implement.object.attacherVehicle:setJointMoveDown(attImpl.jointDescIndex ,self.LIC.interactiveObjects[id].isOpen);
-					break;
-				end;
+			if implement.object.attacherVehicle ~= nil and implement.object.attacherVehicle.setJointMoveDown ~= nil and implement.jointDescIndex ~= nil then
+				implement.object.attacherVehicle:setJointMoveDown(implement.jointDescIndex ,self.LIC.interactiveObjects[id].isOpen);
 			end;
 		end;
 	end;
@@ -237,13 +234,8 @@ local lowerOnImplementsStatus = function(self, implements, id)
 					status = implement.object.isPickupLowered or status;
 				elseif implement.object.setFoldState ~= nil and implement.object.foldMiddleAnimTime ~= nil then
 					status = (implement.object.turnOnFoldDirection == -1 and implement.object.foldAnimTime + 0.01 < implement.object.foldMiddleAnimTime) or (implement.object.turnOnFoldDirection == 1 and implement.object.foldAnimTime - 0.01 > implement.object.foldMiddleAnimTime) or status;
-				else
-					for _,attImpl in pairs(implement.object.attacherVehicle.attachedImplements) do
-						if attImpl.object == implement.object then
-							status = implement.object:isLowered() or status;
-							break;
-						end;
-					end;
+				elseif implement.object.isLowered ~= nil then
+					status = implement.object:isLowered() or status;
 				end;
 			end;
 		end;
