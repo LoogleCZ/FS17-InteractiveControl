@@ -25,15 +25,21 @@ end;
 
 function InteractiveControlEvent:readStream(streamId, connection)
 	self.object = readNetworkNodeObject(streamId);
+	print("IC Debug: Calling readNetworkNodeObject on " .. tostring(streamId) .. ". Readed: " .. tostring(self.object));
 	self.interactiveControlID = streamReadInt8(streamId);
+	print("IC Debug: Calling streamReadInt8 on " .. tostring(streamId) .. ". Readed: " .. tostring(self.interactiveControlID));
 	self.ICIsOpen = streamReadBool(streamId);
+	print("IC Debug: Calling streamReadBool on " .. tostring(streamId) .. ". Readed: " .. tostring(self.ICIsOpen));
     self:run(connection);
 end;
 
 function InteractiveControlEvent:writeStream(streamId, connection)
 	writeNetworkNodeObject(streamId, self.object);
+	print("IC Debug: Calling writeNetworkNodeObject on " .. tostring(streamId) .. ". Written: " .. tostring(self.object));
 	streamWriteInt8(streamId, self.interactiveControlID);
+	print("IC Debug: Calling streamWriteInt8 on " .. tostring(streamId) .. ". Written: " .. tostring(self.interactiveControlID));
 	streamWriteBool(streamId, self.ICIsOpen);
+	print("IC Debug: Calling streamWriteBool on " .. tostring(streamId) .. ". Written: " .. tostring(self.ICIsOpen));
 end;
 
 function InteractiveControlEvent:run(connection)
@@ -41,6 +47,7 @@ function InteractiveControlEvent:run(connection)
 		self.object:actionOnObject(self.interactiveControlID, self.ICIsOpen, true);
 		if not connection:getIsServer() then
 			g_server:broadcastEvent(InteractiveControlEvent:new(self.object, self.interactiveControlID, self.ICIsOpen), nil, connection, self.object);
+			print("IC Debug: Decided to broadcast over " .. tostring(connection));
 		end;
 	end;
 end;
