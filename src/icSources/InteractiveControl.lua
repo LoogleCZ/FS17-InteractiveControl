@@ -424,7 +424,7 @@ function InteractiveControl:postLoad(savegame) -- init actions here
 	end;
 
 	if savegame ~= nil then
-		local icToggleStyle = getXMLInt(savegame.xmlFile, savegame.key.."#icToggleStyle");
+		local icToggleStyle = getXMLInt(savegame.xmlFile, savegame.key..".interactiveControl#toggleStyle");
 		if icToggleStyle ~= nil then
 			self.LIC.toggleStyleState = icToggleStyle;
 		end;
@@ -472,8 +472,7 @@ function InteractiveControl:getSaveAttributesAndNodes(nodeIdent)
 		return minusIndex+index;
 	end;
 
-	local attributes = 'icStateStyle="' .. tostring(self.LIC.toggleStyleState) .. '" ';
-    local nodes = "\t\t<interactiveControl>\n";
+    local nodes = "\t\t<interactiveControl toggleStyle=\"" .. self.LIC.toggleStyleState .. "\">\n";
 	for k,v in pairs(self.LIC.interactiveObjects) do
 		if v.objectType == InteractiveControl.OBJECT_TYPE_ANIMATION then
 			if v.saveStatus then
@@ -487,7 +486,7 @@ function InteractiveControl:getSaveAttributesAndNodes(nodeIdent)
 		end;
 	end;
     nodes = nodes .. "\t\t</interactiveControl>";
-    return attributes, nodes;
+    return nil, nodes;
 end
 
 function InteractiveControl:delete()
