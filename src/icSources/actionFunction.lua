@@ -7,7 +7,7 @@
 -- For IC version: 4.0.4
 -- You can find whole list of supported events in documentation
 --
--- Last edit: 2018-01-25 12:14:00
+-- Last edit: 2018-08-07 15:42:00
 -- Free for non-comerecial usage
 --
 
@@ -146,7 +146,7 @@ end;
 local fillOnImplements = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil then
-			if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil then
+			if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil and implement.object.fillTriggers ~= nil then
 				for _, trigger in ipairs(implement.object.fillTriggers) do
 					if trigger:getIsActivatable(implement.object) then
 						implement.object:setIsFilling(self.LIC.interactiveObjects[id].isOpen);
@@ -163,7 +163,7 @@ local fillOnImplementsStatus = function(self, implements, id)
 	if self:getIsActive() then
 		for _, implement in pairs(implements) do
 			if implement.object ~= nil then
-				if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil then
+				if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil and implement.object.fillTriggers ~= nil then
 					for _, trigger in ipairs(implement.object.fillTriggers) do
 						status = (implement.object.isFilling and trigger:getIsActivatable(implement.object)) or status;
 					end;
@@ -180,7 +180,7 @@ end;
 local turnOnOnImplements = function(self, implements, id)
 	for _,implement in pairs(implements) do
 		if implement.object ~= nil then
-			if implement.object.setIsTurnedOn ~= nil and implement.object:getIsTurnedOnAllowed() then
+			if implement.object.setIsTurnedOn ~= nil and implement.object.getIsTurnedOnAllowed ~= nil and implement.object:getIsTurnedOnAllowed() then
 				implement.object:setIsTurnedOn(self.LIC.interactiveObjects[id].isOpen);
 			end;
 		end;
@@ -191,7 +191,7 @@ local turnOnOnImplementsStatus = function(self, implements, id)
 	status = false;
 	if self:getIsActive() then
 		for _,implement in pairs(implements) do
-			if implement.object ~= nil then
+			if implement.object ~= nil and implement.object.getIsTurnedOn ~= nil then
 				status = implement.object:getIsTurnedOn() or status;
 			end;
 		end;
@@ -204,7 +204,7 @@ local lowerOnImplements = function(self, implements, id)
 		if implement.object ~= nil then
 			if implement.object.isPickupLowered ~= nil and implement.object.setPickupState ~= nil then
 				implement.object:setPickupState(self.LIC.interactiveObjects[id].isOpen);
-			elseif implement.object.setFoldState ~= nil and implement.object.foldMiddleAnimTime then
+			elseif implement.object.setFoldState ~= nil and implement.object.getIsFoldAllowed ~= nil and implement.object.foldMiddleAnimTime then
 				if implement.object:getIsFoldAllowed() then
 					local dir = 1;
 					if not self.LIC.interactiveObjects[id].isOpen then
@@ -254,7 +254,7 @@ end;
 local foldOnImplementsFinish = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil and implement.object.getIsFoldAllowed ~= nil then
-			if implement.object:getIsFoldAllowed() then
+			if implement.object:getIsFoldAllowed() and implement.object.setFoldState ~= nil then
 				local dir = 1;
 				if not self.LIC.interactiveObjects[id].isOpen then
 					dir = -1;
@@ -281,7 +281,7 @@ end;
 local foldOnImplementsMiddle = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil and implement.object.getIsFoldAllowed ~= nil then
-			if implement.object:getIsFoldAllowed() then
+			if implement.object:getIsFoldAllowed() and implement.object.setFoldState ~= nil then
 				local dir = 1;
 				if not self.LIC.interactiveObjects[id].isOpen then
 					dir = -1;
