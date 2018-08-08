@@ -434,6 +434,10 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 					self.lmt.toolState = 1;
 				end;
 			end;
+		elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" then
+			if self.handBrakeState ~= nil then
+				self.handBrakeState = self.LIC.interactiveObjects[id].isOpen;
+			end;
 		elseif self.LIC.interactiveObjects[id].event == "turnsignal.hazard" then
 			if self.setTurnLightState ~= nil then
 				if self.LIC.interactiveObjects[id].isOpen then
@@ -842,6 +846,10 @@ function InteractiveControl:updateOpenStatus(id)
 		elseif self.LIC.interactiveObjects[id].event == "steering.lockMovingTools" then
 			if self.lmt ~= nil then
 				self.LIC.interactiveObjects[id].isOpen = self.lmt.toolState == 2;
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" then
+			if self.handBrakeState ~= nil then
+				self.LIC.interactiveObjects[id].isOpen = self.handBrakeState;
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "turnsignal.hazard" then
 			if self.turnLightState ~= nil then
