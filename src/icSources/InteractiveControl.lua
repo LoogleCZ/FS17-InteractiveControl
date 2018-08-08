@@ -67,7 +67,7 @@ function InteractiveControl:load(savegame)
 		return calculateIndex+index;
 	end;
 	
-	self.LIC.toggleStyleState = 1;
+	self.LIC.toggleStyleState = Utils.clamp(Utils.getNoNil(getXMLInt(self.xmlFile,"vehicle.interactiveComponents#toggleStyle"), 1), 1, 2);
 	self.LIC.lastMouseXPos = 0;
 	self.LIC.lastMouseYPos = 0;
 	self.LIC.foundInteractiveObject = nil;
