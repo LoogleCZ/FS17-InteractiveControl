@@ -24,6 +24,7 @@ If you're using scripts events (GearboxAddon, Cablight, etc...) buttons will be 
 | steering.cruiseControl.speedUp   | `false`         | Base game           | Set speed up on cruise controll                |                                                                                                                                                       |
 | steering.cruiseControl.speedDown | `false`         | Base game           | Set speed down on cruise controll              |                                                                                                                                                       |
 | steering.lockMovingTools         | `false`         | lockMovingTools.lua | Lock Mouse control tools on vehicle            | This event is designed for use lockMovingTools.lua version 1.0 or greater                                                                             |
+| steering.handBrake               | `false`         | handBrake.lua       | Turn on/off handBrake.                         | This event needs handBrake specialization or mod installed. Since IC version 4.0.5                                                                    |
 
 ### Turnsignals
 

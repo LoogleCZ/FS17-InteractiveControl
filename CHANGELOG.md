@@ -4,11 +4,16 @@
 
 ### Added
 
+* Support for handbrake. This feature needs handrake mod.
+* New attribute `toggleStyle` on IC root tag. This attribute allows you to define default toggle style for IC
+
 ### Changed
 
 * Fix outside camera (Issue #1). Now there is no ugly bug with camera position after turning outside IC off.
 * Fix behaviour of of attached implement with IC (Issue #2).
 * Improvement of code in main update.
+* Fix issue #4 - saving toggle style.
+* Fix issue #5 - update error in turnOn events when retrieving status.
 
 ## 4.0.4 - 2018-01-25
 
