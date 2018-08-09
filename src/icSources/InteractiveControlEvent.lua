@@ -43,11 +43,10 @@ function InteractiveControlEvent:writeStream(streamId, connection)
 end;
 
 function InteractiveControlEvent:run(connection)
-	if self.object ~= nil then
-		self.object:actionOnObject(self.interactiveControlID, self.ICIsOpen, true);
-		if not connection:getIsServer() then
-			g_server:broadcastEvent(InteractiveControlEvent:new(self.object, self.interactiveControlID, self.ICIsOpen), nil, connection, self.object);
-			print("IC Debug: Decided to broadcast over " .. tostring(connection));
-		end;
+	if not connection:getIsServer() then
+		g_server:broadcastEvent(self, false, connection, self.object);
+		print("IC Debug: Decided to broadcast over " .. tostring(connection));
 	end;
+	
+	self.object:actionOnObject(self.interactiveControlID, self.ICIsOpen, true);
 end;

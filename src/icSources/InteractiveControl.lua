@@ -245,7 +245,7 @@ function InteractiveControl:load(savegame)
 				k = k + 1;
 			end;
 			j = j + 1;
-			self:actionOnObject(upperLayerIndex, false);
+			self:actionOnObject(upperLayerIndex, false, true);
 			self.LIC:loadICButtonFromXML(self, self.xmlFile, key, self.LIC.interactiveObjects[upperLayerIndex], upperLayerIndex);
 			self.LIC.partsLength[InteractiveControl.OBJECT_TYPE_MONITOR] = self.LIC.partsLength[InteractiveControl.OBJECT_TYPE_MONITOR] + 1;
 		else
@@ -505,12 +505,10 @@ function InteractiveControl:readStream(streamId, connection) -- OK
 	local icCount = streamReadInt8(streamId);
 	print("IC Debug: Calling streamReadInt8 on " .. tostring(streamId) .. ". Readed: " .. tostring(icCount));
 	for i=0, icCount do
-		local isOpen = streamReadBool(streamId);
-		print("IC Debug: Calling streamReadBool on " .. tostring(streamId) .. ". Readed: " .. tostring(isOpen));
-		if self.LIC.interactiveObjects[i] ~= nil then
-			if self.LIC.interactiveObjects[i].synch then
-				self:actionOnObject(i, isOpen, true);
-			end;
+		if self.LIC.interactiveObjects[i].synch then
+			local isOpen = streamReadBool(streamId);
+			print("IC Debug: Calling streamReadBool on " .. tostring(streamId) .. ". Readed: " .. tostring(isOpen));
+			self:actionOnObject(i, isOpen, true);
 		end;
 	end;
 end;
@@ -520,8 +518,10 @@ function InteractiveControl:writeStream(streamId, connection) -- OK
 	streamWriteInt8(streamId, icCount);
 	print("IC Debug: Calling streamWriteInt8 on " .. tostring(streamId) .. ". Written: " .. tostring(icCount));
 	for i=0, icCount do
-		streamWriteBool(streamId, self.LIC.interactiveObjects[i].isOpen);
-		print("IC Debug: Calling streamWriteBool on " .. tostring(streamId) .. ". Written: " .. tostring(self.LIC.interactiveObjects[i].isOpen));
+		if self.LIC.interactiveObjects[i].synch then
+			streamWriteBool(streamId, self.LIC.interactiveObjects[i].isOpen);
+			print("IC Debug: Calling streamWriteBool on " .. tostring(streamId) .. ". Written: " .. tostring(self.LIC.interactiveObjects[i].isOpen));
+		end;
 	end;
 end;
 
