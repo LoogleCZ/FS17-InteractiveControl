@@ -509,7 +509,7 @@ function InteractiveControl:readStream(streamId, connection) -- OK
 		print("IC Debug: Calling streamReadBool on " .. tostring(streamId) .. ". Readed: " .. tostring(isOpen));
 		if self.LIC.interactiveObjects[i] ~= nil then
 			if self.LIC.interactiveObjects[i].synch then
-				self:actionOnObject(i, isOpen, false);
+				self:actionOnObject(i, isOpen, true);
 			end;
 		end;
 	end;
