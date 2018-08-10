@@ -759,9 +759,9 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		end;
 		for k,v in pairs(self.LIC.interactiveObjects[id].actionElements) do
 			if v then
-				self:actionOnObject(k,not open);
+				self:actionOnObject(k, not open, noEventSend);
 			else
-				self:actionOnObject(k,open);
+				self:actionOnObject(k, open , noEventSend);
 			end;
 		end;
 	end;
