@@ -1030,6 +1030,12 @@ function InteractiveControl:checkButtonVisible(id)
 		if self.LIC.interactiveObjects[id].objectType == InteractiveControl.OBJECT_TYPE_EVENT_BUTTON then
 			if string.sub( self.LIC.interactiveObjects[id].event, 1, 5 ) == "l2gs." and type( self["l2gs" .. string.sub(self.LIC.interactiveObjects[id].event, 6)] ) ~= "function" then
 				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "lights.cablight" and self.setCablight == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" and self.handBrakeState == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "steering.lockMovingTools" and self.lmt == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
 			end;
 		end;
 	end;
