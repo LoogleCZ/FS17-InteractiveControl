@@ -290,8 +290,6 @@ end;
 ]]--
 
 function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
-	print("  ===  InteractiveControl:actionOnObject  ===  ");
-	print("  Id: " .. tostring(id) .. "; Open: " .. tostring(isObjectOpen));
 	self:updateOpenStatus(id);
 	
 	if isObjectOpen ~= nil then
@@ -779,16 +777,11 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 			end;
 		end;
 	end;
-
-	print("  noEventSend: " .. tostring(noEventSend));
-	print("  self.LIC.interactiveObjects[id].synch: " .. tostring(self.LIC.interactiveObjects[id].synch));
+	
 	if (noEventSend == nil or noEventSend == false) and self.LIC.interactiveObjects[id].synch then
-		print("  connection is about to happen ...");
 		if g_server ~= nil then
-			print("  ... on server side - broadcast");
 			g_server:broadcastEvent(InteractiveControlEvent:new(self, id, self.LIC.interactiveObjects[id].isOpen), nil, nil, self);
 		else
-			print("  ... on client side - sendEvent to server");
 			g_client:getServerConnection():sendEvent(InteractiveControlEvent:new(self, id, self.LIC.interactiveObjects[id].isOpen));
 		end;
 	end;

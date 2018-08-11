@@ -501,31 +501,23 @@ function InteractiveControl:delete()
 end;
 
 function InteractiveControl:readStream(streamId, connection) -- OK
-	print("  ===  InteractiveControl:readStream  ===  ");
 	local icCount = streamReadInt8(streamId);
-	print("IC Debug: Calling streamReadInt8 on " .. tostring(streamId) .. ". Readed: " .. tostring(icCount));
 	for i=0, icCount do
 		if self.LIC.interactiveObjects[i].synch then
 			local isOpen = streamReadBool(streamId);
-			print("IC Debug: Calling streamReadBool on " .. tostring(streamId) .. ". Readed: " .. tostring(isOpen));
 			self:actionOnObject(i, isOpen, true);
 		end;
 	end;
-	print("  =======================================  ");
 end;
 
 function InteractiveControl:writeStream(streamId, connection) -- OK
-	print("  ===  InteractiveControl:writeStream  ===  ");
 	local icCount = (table.getn(self.LIC.interactiveObjects)-1);
 	streamWriteInt8(streamId, icCount);
-	print("IC Debug: Calling streamWriteInt8 on " .. tostring(streamId) .. ". Written: " .. tostring(icCount));
 	for i=0, icCount do
 		if self.LIC.interactiveObjects[i].synch then
 			streamWriteBool(streamId, self.LIC.interactiveObjects[i].isOpen);
-			print("IC Debug: Calling streamWriteBool on " .. tostring(streamId) .. ". Written: " .. tostring(self.LIC.interactiveObjects[i].isOpen));
 		end;
 	end;
-	print("  ========================================  ");
 end;
 
 function InteractiveControl:mouseEvent(posX, posY, isDown, isUp, button) -- OK
