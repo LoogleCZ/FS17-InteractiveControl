@@ -18,9 +18,9 @@ You can find all changes between versions in [changelog](./CHANGELOG.md)
 
 ### Release
 
-Last script release version: 4.0.4.
+Last script release version: 4.1.0.
 
-Release date: 2018-01-25
+Release date: 2018-08-11
 
 ### Development
 

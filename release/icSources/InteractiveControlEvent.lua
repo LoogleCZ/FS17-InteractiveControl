@@ -1,9 +1,15 @@
---[[
-I made some quick changes here to eliminate a MP error when I did a quick check.
-I have not done a check in MP with more than one player yet. I will do this tomorrow but I wanted to make sure you were happy with the dirrection of the script :-)
-
--- OK thats OK
-]]--
+--
+-- Part of InteractiveControl script.
+-- This file contains InteractiveControlEvent class for emitting network events
+-- for IC
+--
+-- Author: Martin Fabík (LoogleCZ)
+-- Thanks Adam Maršík for network debugging
+-- For IC version: 4.1.0
+--
+-- Last edit: 2018-08-11 16:30:00
+-- Free for non-comerecial usage
+--
 
 InteractiveControlEvent = {};
 InteractiveControlEvent_mt = Class(InteractiveControlEvent, Event);
@@ -37,10 +43,9 @@ function InteractiveControlEvent:writeStream(streamId, connection)
 end;
 
 function InteractiveControlEvent:run(connection)
-	if self.object ~= nil then
-		self.object:actionOnObject(self.interactiveControlID, self.ICIsOpen, true);
-		if not connection:getIsServer() then
-			g_server:broadcastEvent(InteractiveControlEvent:new(self.object, self.interactiveControlID, self.ICIsOpen), nil, connection, self.object);
-		end;
+	if not connection:getIsServer() then
+		g_server:broadcastEvent(self, false, connection, self.object);
 	end;
+	
+	self.object:actionOnObject(self.interactiveControlID, self.ICIsOpen, true);
 end;

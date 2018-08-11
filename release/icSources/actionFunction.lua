@@ -4,10 +4,10 @@
 --
 -- Author: Martin Fabík (LoogleCZ)
 -- Author of some events: Andy (GtX)
--- For IC version: 4.0.4
+-- For IC version: 4.1.0
 -- You can find whole list of supported events in documentation
 --
--- Last edit: 2018-01-25 12:14:00
+-- Last edit: 2018-08-11 16:30:00
 -- Free for non-comerecial usage
 --
 
@@ -16,6 +16,7 @@
 -- All synch attributes in monitors should be set to TRUE.
 -- All synch attributes in visControl should be set to TRUE.
 -- All synch attributes in multi buttons should be set to FALSE.
+-- Recomended values of synch attribute for buttons can be found on GitHub 
 --
 
 --
@@ -146,7 +147,7 @@ end;
 local fillOnImplements = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil then
-			if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil then
+			if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil and implement.object.fillTriggers ~= nil then
 				for _, trigger in ipairs(implement.object.fillTriggers) do
 					if trigger:getIsActivatable(implement.object) then
 						implement.object:setIsFilling(self.LIC.interactiveObjects[id].isOpen);
@@ -163,7 +164,7 @@ local fillOnImplementsStatus = function(self, implements, id)
 	if self:getIsActive() then
 		for _, implement in pairs(implements) do
 			if implement.object ~= nil then
-				if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil then
+				if implement.object.isFilling ~= nil and implement.object.setIsFilling ~= nil and implement.object.fillTriggers ~= nil then
 					for _, trigger in ipairs(implement.object.fillTriggers) do
 						status = (implement.object.isFilling and trigger:getIsActivatable(implement.object)) or status;
 					end;
@@ -180,7 +181,7 @@ end;
 local turnOnOnImplements = function(self, implements, id)
 	for _,implement in pairs(implements) do
 		if implement.object ~= nil then
-			if implement.object.setIsTurnedOn ~= nil and implement.object:getIsTurnedOnAllowed() then
+			if implement.object.setIsTurnedOn ~= nil and implement.object.getIsTurnedOnAllowed ~= nil and implement.object:getIsTurnedOnAllowed() then
 				implement.object:setIsTurnedOn(self.LIC.interactiveObjects[id].isOpen);
 			end;
 		end;
@@ -191,7 +192,7 @@ local turnOnOnImplementsStatus = function(self, implements, id)
 	status = false;
 	if self:getIsActive() then
 		for _,implement in pairs(implements) do
-			if implement.object ~= nil then
+			if implement.object ~= nil and implement.object.getIsTurnedOn ~= nil then
 				status = implement.object:getIsTurnedOn() or status;
 			end;
 		end;
@@ -204,7 +205,7 @@ local lowerOnImplements = function(self, implements, id)
 		if implement.object ~= nil then
 			if implement.object.isPickupLowered ~= nil and implement.object.setPickupState ~= nil then
 				implement.object:setPickupState(self.LIC.interactiveObjects[id].isOpen);
-			elseif implement.object.setFoldState ~= nil and implement.object.foldMiddleAnimTime then
+			elseif implement.object.setFoldState ~= nil and implement.object.getIsFoldAllowed ~= nil and implement.object.foldMiddleAnimTime then
 				if implement.object:getIsFoldAllowed() then
 					local dir = 1;
 					if not self.LIC.interactiveObjects[id].isOpen then
@@ -218,11 +219,8 @@ local lowerOnImplements = function(self, implements, id)
 					end;
 				end;
 			end;
-			for _,attImpl in pairs(implement.object.attacherVehicle.attachedImplements) do
-				if attImpl.object == implement.object then
-					implement.object.attacherVehicle:setJointMoveDown(attImpl.jointDescIndex ,self.LIC.interactiveObjects[id].isOpen);
-					break;
-				end;
+			if implement.object.attacherVehicle ~= nil and implement.object.attacherVehicle.setJointMoveDown ~= nil and implement.jointDescIndex ~= nil then
+				implement.object.attacherVehicle:setJointMoveDown(implement.jointDescIndex ,self.LIC.interactiveObjects[id].isOpen);
 			end;
 		end;
 	end;
@@ -237,13 +235,8 @@ local lowerOnImplementsStatus = function(self, implements, id)
 					status = implement.object.isPickupLowered or status;
 				elseif implement.object.setFoldState ~= nil and implement.object.foldMiddleAnimTime ~= nil then
 					status = (implement.object.turnOnFoldDirection == -1 and implement.object.foldAnimTime + 0.01 < implement.object.foldMiddleAnimTime) or (implement.object.turnOnFoldDirection == 1 and implement.object.foldAnimTime - 0.01 > implement.object.foldMiddleAnimTime) or status;
-				else
-					for _,attImpl in pairs(implement.object.attacherVehicle.attachedImplements) do
-						if attImpl.object == implement.object then
-							status = implement.object:isLowered() or status;
-							break;
-						end;
-					end;
+				elseif implement.object.isLowered ~= nil then
+					status = implement.object:isLowered() or status;
 				end;
 			end;
 		end;
@@ -254,7 +247,7 @@ end;
 local foldOnImplementsFinish = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil and implement.object.getIsFoldAllowed ~= nil then
-			if implement.object:getIsFoldAllowed() then
+			if implement.object:getIsFoldAllowed() and implement.object.setFoldState ~= nil then
 				local dir = 1;
 				if not self.LIC.interactiveObjects[id].isOpen then
 					dir = -1;
@@ -281,7 +274,7 @@ end;
 local foldOnImplementsMiddle = function(self, implements, id)
 	for _, implement in pairs(implements) do
 		if implement.object ~= nil and implement.object.getIsFoldAllowed ~= nil then
-			if implement.object:getIsFoldAllowed() then
+			if implement.object:getIsFoldAllowed() and implement.object.setFoldState ~= nil then
 				local dir = 1;
 				if not self.LIC.interactiveObjects[id].isOpen then
 					dir = -1;
@@ -413,7 +406,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedUp" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed + 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
@@ -425,7 +418,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedDown" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed - 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
@@ -441,6 +434,10 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 				else
 					self.lmt.toolState = 1;
 				end;
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" then
+			if self.handBrakeState ~= nil then
+				self.handBrakeState = self.LIC.interactiveObjects[id].isOpen;
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "turnsignal.hazard" then
 			if self.setTurnLightState ~= nil then
@@ -765,9 +762,9 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		end;
 		for k,v in pairs(self.LIC.interactiveObjects[id].actionElements) do
 			if v then
-				self:actionOnObject(k,not open);
+				self:actionOnObject(k, not open, noEventSend);
 			else
-				self:actionOnObject(k,open);
+				self:actionOnObject(k, open , noEventSend);
 			end;
 		end;
 	end;
@@ -850,6 +847,10 @@ function InteractiveControl:updateOpenStatus(id)
 		elseif self.LIC.interactiveObjects[id].event == "steering.lockMovingTools" then
 			if self.lmt ~= nil then
 				self.LIC.interactiveObjects[id].isOpen = self.lmt.toolState == 2;
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" then
+			if self.handBrakeState ~= nil then
+				self.LIC.interactiveObjects[id].isOpen = self.handBrakeState;
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "turnsignal.hazard" then
 			if self.turnLightState ~= nil then
@@ -1029,6 +1030,12 @@ function InteractiveControl:checkButtonVisible(id)
 	if force == nil or force == false then
 		if self.LIC.interactiveObjects[id].objectType == InteractiveControl.OBJECT_TYPE_EVENT_BUTTON then
 			if string.sub( self.LIC.interactiveObjects[id].event, 1, 5 ) == "l2gs." and type( self["l2gs" .. string.sub(self.LIC.interactiveObjects[id].event, 6)] ) ~= "function" then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "lights.cablight" and self.setCablight == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" and self.handBrakeState == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif self.LIC.interactiveObjects[id].event == "steering.lockMovingTools" and self.lmt == nil then
 				self.LIC.interactiveObjects[id].doNotShow = true;
 			end;
 		end;
