@@ -1,6 +1,6 @@
 # Changelog for Interactive Control script
 
-## 4.1.0 - Dev. version
+## 4.1.0 - 2018-08-11
 
 ### Added
 
