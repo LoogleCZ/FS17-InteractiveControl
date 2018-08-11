@@ -4,10 +4,10 @@
 --
 -- Author: Martin Fabík (LoogleCZ)
 -- Author of some events: Andy (GtX)
--- For IC version: 4.0.4
+-- For IC version: 4.1.0
 -- You can find whole list of supported events in documentation
 --
--- Last edit: 2018-08-07 15:42:00
+-- Last edit: 2018-08-11 16:30:00
 -- Free for non-comerecial usage
 --
 
@@ -16,6 +16,7 @@
 -- All synch attributes in monitors should be set to TRUE.
 -- All synch attributes in visControl should be set to TRUE.
 -- All synch attributes in multi buttons should be set to FALSE.
+-- Recomended values of synch attribute for buttons can be found on GitHub 
 --
 
 --

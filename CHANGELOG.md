@@ -1,6 +1,6 @@
 # Changelog for Interactive Control script
 
-## 4.0.5 - Dev. version
+## 4.1.0 - Dev. version
 
 ### Added
 
@@ -14,6 +14,7 @@
 * Improvement of code in main update.
 * Fix issue #4 - saving toggle style.
 * Fix issue #5 - update error in turnOn events when retrieving status.
+* Fix issue #6 - network communication and also test this. Now MP works fine.
 
 ## 4.0.4 - 2018-01-25
 

@@ -14,7 +14,7 @@ If you have any question regards this XML scheme, send me mail at [mar.fabik@gma
 
 ```xml
 <!-- IC XML schema documentation -->
-<interactiveComponents [outsideTriggerOn="false"//bool [minOutsideDistance="3"//float]]>
+<interactiveComponents [outsideTriggerOn="false"//bool [minOutsideDistance="3"//float]] [toggleStyle="1"//int]>
 	[<animations>
 		[<animation 
 			[name="modHub_error"//l10n_entry] 

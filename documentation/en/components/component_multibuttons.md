@@ -59,7 +59,7 @@ The following table will explain what certain attributes do:
 | **pulsingMark       | bool       | false                | If set to true, mark will be pulsing when hovering on it. |
 | pulseScale          | i3d coords | 0.01 0.01 0.01       | Tell the script how much will mark pulse. |
 | defaultStatus       | bool       | false                | Default status of component. Component's status will be set to this value when loading |
-| synch               | bool       | true                 | Tell the script if component will be synchronized via IC or not. In animations is recomended to set synch to `true` (or do not state synch attribute) |
+| synch               | bool       | true                 | Tell the script if component will be synchronized via IC or not. In multi buttons it is recomended to set synch to `false` |
 | initAction          | bool       | false                | If set to `true`, component will be triggered at loading to synchronize state and actual status. In animations is recomended to set `initAction` to `true` |
 | playClickSound      | bool       | false                | If click sound will be played when clicking the mark. |
 

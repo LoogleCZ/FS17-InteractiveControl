@@ -1,10 +1,10 @@
 # Supperted events for buttons
 
-in Interactive Control version 4.0.0. from XX.XX.2017. If you have any question or idea for new event, let me know at [mar.fabik@gmail.com](mailto:mar.fabik@gmail.com).
+in Interactive Control version 4.1.0. from 11.08.2018. If you have any question or idea for new event, let me know at [mar.fabik@gmail.com](mailto:mar.fabik@gmail.com).
 
 Please note, that some events are not tested in multiplayer yet, or I'm not sure which state use. This events have aetrisk(*) in synch attribute. If event doesn't work in MP, you could try to switch synch attribute. If event doesn't work either with synch true and false, please let me know at [mar.fabik@gmail.com](mailto:mar.fabik@gmail.com).
 
-If you're using scripts events (GearboxAddon, Cablight, etc...) buttons will be shown only if requested script is available. If script is not presented, notice is produced (in log).
+If you're using scripts events (GearboxAddon, Cablight, etc...) buttons will be shown only if requested script is available. If script is not presented, button is hidden.
 
 ## Events for steerable vehicles
 
@@ -24,7 +24,7 @@ If you're using scripts events (GearboxAddon, Cablight, etc...) buttons will be 
 | steering.cruiseControl.speedUp   | `false`         | Base game           | Set speed up on cruise controll                |                                                                                                                                                       |
 | steering.cruiseControl.speedDown | `false`         | Base game           | Set speed down on cruise controll              |                                                                                                                                                       |
 | steering.lockMovingTools         | `false`         | lockMovingTools.lua | Lock Mouse control tools on vehicle            | This event is designed for use lockMovingTools.lua version 1.0 or greater                                                                             |
-| steering.handBrake               | `false`         | handBrake.lua       | Turn on/off handBrake.                         | This event needs handBrake specialization or mod installed. Since IC version 4.0.5                                                                    |
+| steering.handBrake               | `true`          | handBrake.lua       | Turn on/off handBrake.                         | This event needs handBrake specialization or mod installed. Since IC version 4.0.5                                                                    |
 
 ### Turnsignals
 
@@ -52,7 +52,6 @@ Link to global scripts is script provided by Mogli (biedens) for better integrat
 You can use `LinkToGlobalScripts` (l2gs) script with IC. All zou have to do is name zour event like `l2gs.l2gsFunction`. Down below you can find some useful functions that is provided in version `2017/10/25 - version 2.0 (FS17)` also with proper IC name.
 
 Example of usage: you want to call function `l2gsToggleDC4WD` from l2gs script. Proper name in this case will be `l2gs.ToggleDC4WD`
-
 
 ## Events for controling attached inplements
 

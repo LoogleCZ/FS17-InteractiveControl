@@ -4,7 +4,7 @@ This is specialization for Farming Simulator 17 - Interactive Control.
 
 ## History
 
-This specialization is available many years now. In year 2014 I was asked to add monitors feature into old IC. I've done this and also started to create new concept of IC. In FS15 there was some releases, but then I've ended with scripting for FS. This was due to my graduation exams and because I went to college.
+This specialization is available many years now. In year 2014 I was asked to add monitors feature into old IC. I've done this and also started to create new concept of IC. In FS15 there was some releases, but then I've ended with scripting for FS. This was due to my graduation exams and because I went to college. Today I sometimes comes back and do some new stuff, but only sometimes.
 
 In summer 2017 GtX from LS Modcompany contacted me and asked me to revide his convert of IC to FS17. I was excited and I started to revide his code. At same time I realized that events are old and not maintained and IC should be done better. So I started to creating new version - version 4.0.0
 
@@ -24,9 +24,9 @@ Release date: 2018-01-25
 
 ### Development
 
-Last script development version: 4.0.5.
+Last script development version: 4.1.0.
 
-Last modification date: 2018-03-06
+Last modification date: 2018-08-11
 
 ## Contributors
 
@@ -36,7 +36,10 @@ Development since FS13: [Martin Fabík](https://www.fb.com/LoogleCZ) [<mar.fabik@
 
 Convert to FS17 and some changes: GtX from LS Modcompany
 
-Testing: [Ago-Systemtech (Modhoster Team)](https://www.fb.com/ago.systemtech)
+Testing:
+
+- [Ago-Systemtech (Modhoster Team)](https://www.fb.com/ago.systemtech)
+- Adam Maršík
 
 If you want to help with development with this script, you can do it here on GitHub or write me an email at [mar.fabik@gmail.com](mailto:mar.fabik@gmail.com).
 

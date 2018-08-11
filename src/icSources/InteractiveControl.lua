@@ -12,8 +12,8 @@
 -- GitHub project: https://github.com/LoogleCZ/FS17-InteractiveControl
 -- If anyone found errors, please contact me at mar.fabik@gmail.com or report it on GitHub
 --
--- version ID   - 4.0.5
--- version date - 2018-02-24 00:39:00
+-- version ID   - 4.1.0
+-- version date - 2018-08-11 16:30:00
 --
 
 InteractiveControl = {};

@@ -1,6 +1,6 @@
-# How to make IC optional feature
+# How to make IC as optional feature
 
-You can also make IC optional in shop. It's not an hard task - all you need to do is follow this steps:
+You can also make IC as optional in shop. It's not an hard task - all you need to do is follow this steps:
 
 ## Step 1 - Prepare modDesc
 
