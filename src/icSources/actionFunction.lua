@@ -290,6 +290,8 @@ end;
 ]]--
 
 function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
+	print("  ===  InteractiveControl:actionOnObject  ===  ");
+	print("  Id: " .. tostring(id) .. "; Open: " .. tostring(isObjectOpen));
 	self:updateOpenStatus(id);
 	
 	if isObjectOpen ~= nil then
@@ -405,7 +407,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedUp" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed + 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
@@ -417,7 +419,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedDown" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed - 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
@@ -761,9 +763,9 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		end;
 		for k,v in pairs(self.LIC.interactiveObjects[id].actionElements) do
 			if v then
-				self:actionOnObject(k,not open);
+				self:actionOnObject(k, not open, noEventSend);
 			else
-				self:actionOnObject(k,open);
+				self:actionOnObject(k, open , noEventSend);
 			end;
 		end;
 	end;
@@ -777,11 +779,16 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 			end;
 		end;
 	end;
-	
+
+	print("  noEventSend: " .. tostring(noEventSend));
+	print("  self.LIC.interactiveObjects[id].synch: " .. tostring(self.LIC.interactiveObjects[id].synch));
 	if (noEventSend == nil or noEventSend == false) and self.LIC.interactiveObjects[id].synch then
+		print("  connection is about to happen ...");
 		if g_server ~= nil then
+			print("  ... on server side - broadcast");
 			g_server:broadcastEvent(InteractiveControlEvent:new(self, id, self.LIC.interactiveObjects[id].isOpen), nil, nil, self);
 		else
+			print("  ... on client side - sendEvent to server");
 			g_client:getServerConnection():sendEvent(InteractiveControlEvent:new(self, id, self.LIC.interactiveObjects[id].isOpen));
 		end;
 	end;
