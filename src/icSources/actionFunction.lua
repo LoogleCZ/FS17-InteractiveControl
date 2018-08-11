@@ -407,7 +407,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedUp" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed + 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
@@ -419,7 +419,7 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 		elseif self.LIC.interactiveObjects[id].event == "steering.cruiseControl.speedDown" then
 			if self.cruiseControl ~= nil then
 				self:setCruiseControlMaxSpeed(self.cruiseControl.speed - 1);
-				if self.cruiseControl.speed ~= self.cruiseControl.speedSent then
+				if (noEventSend == nil or noEventSend == false) and self.cruiseControl.speed ~= self.cruiseControl.speedSent then
 					if g_server ~= nil then
 						g_server:broadcastEvent(SetCruiseControlSpeedEvent:new(self, self.cruiseControl.speed), nil, nil, self);
 					else
