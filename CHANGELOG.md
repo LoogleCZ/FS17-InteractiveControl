@@ -1,5 +1,11 @@
 # Changelog for Interactive Control script
 
+## 4.1.1 - 2018-09-05 Development version
+
+### Added
+
+* New events for controlling [ingame GPS map](https://github.com/LoogleCZ/FS17-RealGPSMod)
+
 ## 4.1.0 - 2018-08-11
 
 ### Added

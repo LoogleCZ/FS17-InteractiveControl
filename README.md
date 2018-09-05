@@ -24,9 +24,9 @@ Release date: 2018-08-11
 
 ### Development
 
-Last script development version: 4.1.0.
+Last script development version: 4.1.1.
 
-Last modification date: 2018-08-11
+Last modification date: 2018-09-05
 
 ## Contributors
 

@@ -4,10 +4,10 @@
 --
 -- Author: Martin Fabík (LoogleCZ)
 -- Author of some events: Andy (GtX)
--- For IC version: 4.1.0
+-- For IC version: 4.1.1
 -- You can find whole list of supported events in documentation
 --
--- Last edit: 2018-08-11 16:30:00
+-- Last edit: 2018-09-05 21:30:00
 -- Free for non-comerecial usage
 --
 
@@ -696,6 +696,29 @@ function InteractiveControl:actionOnObject(id, isObjectOpen, noEventSend)
 					self:setPipeState(1);
 				end;
 			end;
+		--[[ LRM ]]--
+		elseif self.LIC.interactiveObjects[id].event == "lrm.rotateMode.toggle"
+			or self.LIC.interactiveObjects[id].event == "lrm.rotateMode.map"
+			or self.LIC.interactiveObjects[id].event == "lrm.rotateMode.player" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self:lrm_setRotateMap(self.LIC.interactiveObjects[id].isOpen);
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.mapZoom.increase" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self:lrm_setMapZoom(Utils.clamp(self.LRM.map.zoom + 0.5, self.LRM.map.minZoom, self.LRM.map.maxZoom));
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.mapZoom.decrease" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self:lrm_setMapZoom(Utils.clamp(self.LRM.map.zoom - 0.5, self.LRM.map.minZoom, self.LRM.map.maxZoom));
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.playerSize.increase" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self:lrm_setPlayerSize(Utils.clamp(self.LRM.player.size + 0.04, self.LRM.player.minSize, self.LRM.player.maxSize));
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.playerSize.decrease" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self:lrm_setPlayerSize(Utils.clamp(self.LRM.player.size - 0.04, self.LRM.player.minSize, self.LRM.player.maxSize));
+			end;
 		end;
 	end;
 	
@@ -1003,6 +1026,23 @@ function InteractiveControl:updateOpenStatus(id)
 			end;
 		elseif self.LIC.interactiveObjects[id].event == "pipe" then
 			self.LIC.interactiveObjects[id].isOpen = self.pipeTargetState ~= 1;
+		--[[ LRM ]]--
+		elseif self.LIC.interactiveObjects[id].event == "lrm.rotateMode.toggle" then
+			if self.LRM ~= nil and self.LRM.isInitialized then
+				self.LIC.interactiveObjects[id].isOpen = self.LRM.rotatingMap;
+			end;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.rotateMode.map" then
+			self.LIC.interactiveObjects[id].isOpen = false;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.rotateMode.player" then
+			self.LIC.interactiveObjects[id].isOpen = true;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.mapZoom.decrease" then
+			self.LIC.interactiveObjects[id].isOpen = false;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.mapZoom.increase" then
+			self.LIC.interactiveObjects[id].isOpen = false;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.playerSize.decrease" then
+			self.LIC.interactiveObjects[id].isOpen = false;
+		elseif self.LIC.interactiveObjects[id].event == "lrm.playerSize.increase" then
+			self.LIC.interactiveObjects[id].isOpen = false;
 		end;
 	end;
 	
@@ -1036,6 +1076,8 @@ function InteractiveControl:checkButtonVisible(id)
 			elseif self.LIC.interactiveObjects[id].event == "steering.handBrake" and self.handBrakeState == nil then
 				self.LIC.interactiveObjects[id].doNotShow = true;
 			elseif self.LIC.interactiveObjects[id].event == "steering.lockMovingTools" and self.lmt == nil then
+				self.LIC.interactiveObjects[id].doNotShow = true;
+			elseif string.sub( self.LIC.interactiveObjects[id].event, 1, 4 ) == "lrm." and (self.LRM == nil or not self.LRM.isInitialized) then
 				self.LIC.interactiveObjects[id].doNotShow = true;
 			end;
 		end;

@@ -161,7 +161,21 @@ Events for controlling radio if supported
 
 | Event name | Synch attribute | Affected script | Description                                               |
 | ---------- |:---------------:|:---------------:| --------------------------------------------------------- |
-| mix.cover  | `false`         | Base game       | change cover state of vehicle. Needs Cover specialization |
+| mix.cover  | `false`         | Base game       | Change cover state of vehicle. Needs Cover specialization |
+
+### Real GPS map mod
+
+Interactive Control since version 4.1.1 support events for [real GPS mod](https://github.com/LoogleCZ/FS17-RealGPSMod). Here is list of those events.
+
+| Event name              | Synch attribute | Affected script | Description                                               |
+| ----------------------- |:---------------:|:---------------:| --------------------------------------------------------- |
+| lrm.rotateMode.toggle   | `false`         | Real GPS mod    | Toggle between map rotation mode and player rotation mode |
+| lrm.rotateMode.map      | `false`         | Real GPS mod    | Set map rotation mode on reald GPS map                    |
+| lrm.rotateMode.player   | `false`         | Real GPS mod    | Set player rotation mode on reald GPS map                 |
+| lrm.mapZoom.increase    | `false`         | Real GPS mod    | Increase map zoom by 0.5                                  |
+| lrm.mapZoom.decrease    | `false`         | Real GPS mod    | Decrease map zoom by 0.5                                  |
+| lrm.playerSize.increase | `false`         | Real GPS mod    | Increase player size by 0.04                              |
+| lrm.playerSize.decrease | `false`         | Real GPS mod    | Decrease player size by 0.04                              |
 
 ## Events for harvesters
 
