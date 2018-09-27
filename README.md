@@ -18,15 +18,15 @@ You can find all changes between versions in [changelog](./CHANGELOG.md)
 
 ### Release
 
-Last script release version: 4.1.0.
+Last script release version: 4.1.1.
 
-Release date: 2018-08-11
+Release date: 2018-09-27
 
 ### Development
 
 Last script development version: 4.1.1.
 
-Last modification date: 2018-09-05
+Last modification date: 2018-09-27
 
 ## Contributors
 
