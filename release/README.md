@@ -1,4 +1,4 @@
-# Interactive Control 4.1.0
+# Interactive Control 4.1.1
 
 GitHub repository with releases: https://github.com/LoogleCZ/FS17-InteractiveControl
 
